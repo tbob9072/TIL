@@ -53,3 +53,11 @@ t.test(train$성별, train$이웃신뢰도, paired = T)
 head(train)
 str(train)
 
+install.packages("caret")
+library(caret)
+library(nnet)
+
+nnet.result <- nnet(이웃신뢰도~. , train, size = 5)
+nnet.pred <- predict(nnet.result, test)
+table(nnet.pred, test$이웃신뢰도)
+
