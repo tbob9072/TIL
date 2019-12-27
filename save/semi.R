@@ -1,7 +1,7 @@
-setwd("c://Rwork")
-train <- read.csv("train.csv")
+setwd("/Users/tbob/Rproject")
+train <- read.csv("train.csv", fileEncoding = "euc-kr")
 head(train)
-test <- read.csv("hoho.csv")
+test <- read.csv("hoho.csv", fileEncoding = "euc-kr")
 head(test)
 str(train)
 
