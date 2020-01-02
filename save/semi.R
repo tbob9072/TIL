@@ -17,6 +17,7 @@ train$기부 <- as.factor(train$기부)
 train$정치성향 <- as.factor(train$정치성향)
 train$직업 <- as.factor(train$직업)
 train$이웃신뢰도 <- as.factor(train$이웃신뢰도)
+train$가족신뢰도 <- as.factor(train$가족신뢰도)
 
 test$성별 <- as.factor(test$성별)
 test$혼인상태 <- as.factor(test$혼인상태)
@@ -27,26 +28,28 @@ test$기부 <- as.factor(test$기부)
 test$정치성향 <- as.factor(test$정치성향)
 test$직업 <- as.factor(test$직업)
 test$이웃신뢰도 <- as.factor(test$이웃신뢰도)
+test$가족신뢰도 <- as.factor(test$가족신뢰도)
+
 
 train <- train %>% select(-c(id, 자치구, 가족신뢰도, 공공기관신뢰도, 종합신뢰도))
 test <- test %>% select(-c(id, 자치구, 가족신뢰도, 공공기관신뢰도, 종합신뢰도, 신뢰도))
 
 # 다중회귀분석 머신러닝
 library(nnet)
-model <- multinom(이웃신뢰도~., data = train)
+model <- multinom(가족신뢰도~., data = train)
 # summary(model)
 result <- predict(model, test)
 result
 
-confusionMatrix(result, test$이웃신뢰도)
+confusionMatrix(result, test$가족신뢰도)
 
 # 의사결정트리 머신러닝
 library(rpart)
 
-model <- rpart(이웃신뢰도~., data = train)
+model <- rpart(가족신뢰도~., data = train)
 result <- predict(model, test, type = "class")
 head(result)
-confusionMatrix(result, test$이웃신뢰도)
+confusionMatrix(result, test$가족신뢰도)
 
 #랜덤포레스트
 install.packages("randomForest")
@@ -95,6 +98,10 @@ library(caret)
 library(nnet)
 
 nnet.result <- nnet(이웃신뢰도~. , train, size = 3)
-nnet.pred <- predict(nnet.result, test)
+nnet.pred <- predict(nnet.result, test, type = "class")
 table(nnet.pred, test$이웃신뢰도)
 
+length(nnet.pred)
+length(test$이웃신뢰도)
+
+confusionMatrix(factor(nnet.pred, levels = c(1, 2, 3, 4, 5)), test$이웃신뢰도)
