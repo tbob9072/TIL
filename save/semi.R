@@ -102,18 +102,40 @@ t.test(train$성별, train$이웃신뢰도, paired = T)
 head(train)
 str(train)
 
+# nn
 install.packages("caret")
 library(caret)
 library(nnet)
 
-nnet.result <- nnet(이웃신뢰도~. , train, size = 3)
-nnet.pred <- predict(nnet.result, test, type = "class")
-table(nnet.pred, test$이웃신뢰도)
+normalize <- function(x){
+  return((x-min(x))/(max(x)-min(x)))
+}
+
+train <- train %>% select(-c(id, 자치구, 가족신뢰도, 공공기관신뢰도, 종합신뢰도, 기부))
+scaled_train <- as.data.frame(lapply(train,normalize))
+scaled_train
+
+str(train)
+
+test <- test %>% select(-c(id, 자치구, 가족신뢰도, 공공기관신뢰도, 종합신뢰도,신뢰도, 기부))
+scaled_test <- as.data.frame(lapply(test,normalize))
+scaled_test
+
+scaled_train$이웃신뢰도 <- ifelse(scaled_train$이웃신뢰도 < 0.5, 0, ifelse(scaled_train$이웃신뢰도 > 0.5, 1, 0.5))
+scaled_test$이웃신뢰도 <- ifelse(scaled_test$이웃신뢰도 < 0.5, 0, ifelse(scaled_test$이웃신뢰도 > 0.5, 1, 0.5))
+
+scaled_train$이웃신뢰도 <- as.factor(scaled_train$이웃신뢰도)
+scaled_test$이웃신뢰도 <- as.factor(scaled_test$이웃신뢰도)
+
+
+nnet.result <- nnet(이웃신뢰도~. , scaled_train, size = 3)
+nnet.pred <- predict(nnet.result, scaled_test, type = "class")
+table(nnet.pred, scaled_test$이웃신뢰도)
 
 length(nnet.pred)
 length(test$이웃신뢰도)
 
-confusionMatrix(factor(nnet.pred, levels = c(1, 2, 3, 4, 5)), test$이웃신뢰도)
+confusionMatrix(factor(nnet.pred), scaled_test$이웃신뢰도)
 
 
 #PCA 분석
