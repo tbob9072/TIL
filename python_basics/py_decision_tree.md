@@ -35,5 +35,28 @@ tree.fit(X_train, y_train)
 
 print("훈련 세트 정확도: {: .3f}".format(tree.score(X_train, y_train)))
 print("테스트 세트 정확도: {: .3f}".format(tree.score(X_test, y_test)))
+
+# 그래프
+from sklearn.tree import export_graphviz
+export_graphviz(tree, out_file="tree.dot", class_names=["악성", "양성"], feature_names=cancer.feature_names, impurity=False, filled=True)
+
+import graphviz
+with open("tree.dot") as f :
+    dot_graph = f.read()
+display(graphviz.Source(dot_graph))
+
+# 특성 중요도 파악
+import matplotlib.pyplot as plt
+import numpy as np
+
+def plot_feature_importances_cancer(model) :
+    n_features = cancer.data.shape[1]
+    plt.barh(np.arange(n_features), model.feature_importances_, align = 'center')
+    plt.yticks(np.arange(n_features), cancer.feature_names)
+    plt.xlabel("특성중요도")
+    plt.ylabel("특성")
+    plt.ylim(-1, n_features)
+    
+plot_feature_importances_cancer(tree)
 ```
 
