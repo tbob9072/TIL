@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset="UTF-8">
+        <script>
+            //선언부 소속 window
+            function display(name){
+                window.document.write("<h1>이름:"+name+"<h1>");
+                window.document.write("<h1>이름:"+city+"<h1>");
+            }
+            function display(name, city, age, point){
+                for(arg in arguments){
+                    document.write("<h1>arg:"+arguments[arg]);
+                }
+            }
+
+            //function 안에 function을 넣을 수 있는 유일한 언어 (inner function)
+
+            function myfunc(){
+                function display(){
+
+                }
+            }
+
+            //호출부
+            display("홍길동", "서울시");
+        </script>
+    </head>
+</html>

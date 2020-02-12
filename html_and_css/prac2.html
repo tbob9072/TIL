@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset="UTF-8">
+    <script>
+        //오른쪽에 주어진 값을 해석하지않고 그대로 받아드리는 것은 literal이라고 한다.
+        //숫자 리터럴
+        var j = 10
+        //문자(열) 리터럴
+        var k = "hi"
+        //함수리터럴, 배열리터럴, 객체리터럴
+        
+        //익명함수
+        var show = function(){
+            window.alert('show function');
+        }
+        
+        //선언적함수
+        function display(args){
+            document.write(args);
+        }
+        
+
+        //function dp(function({
+
+        //}){
+
+        //}
+
+        function dp2(){
+            return (function(){;})
+        }
+
+        
+        //배열리터럴 (인덱스 접근법을 사용함)
+        var arr = [1,2.5,"Hello",function(){},[4,5,6]]
+        //객체리터럴 (키값으로 접근함)
+        var obj={
+            name:'홍길동',
+            age:30,
+            display:function(){
+                document.write(this.name)
+            },
+            moveUp:function(){
+
+            }
+        }
+
+
+        document.write(obj.name)
+        
+
+        
+    </script>
+    </head>
+</html>
